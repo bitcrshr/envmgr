@@ -10,8 +10,8 @@ import (
 	"syscall"
 
 	"github.com/bitcrshr/envmgr/api/ent"
-	pb "github.com/bitcrshr/envmgr/api/proto/compiled/go"
 	"github.com/bitcrshr/envmgr/api/shared"
+	pb "github.com/bitcrshr/envmgr/proto/compiled/go"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

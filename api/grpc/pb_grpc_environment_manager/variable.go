@@ -2,8 +2,8 @@ package pb_grpc_environment_manager
 
 import (
 	"github.com/bitcrshr/envmgr/api/ent"
-	pb "github.com/bitcrshr/envmgr/api/proto/compiled/go"
 	"github.com/bitcrshr/envmgr/api/shared"
+	pb "github.com/bitcrshr/envmgr/proto/compiled/go"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )

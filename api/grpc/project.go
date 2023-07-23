@@ -5,8 +5,8 @@ import (
 
 	"github.com/bitcrshr/envmgr/api/ent"
 	"github.com/bitcrshr/envmgr/api/grpc/pb_grpc_environment_manager"
-	pb "github.com/bitcrshr/envmgr/api/proto/compiled/go"
 	"github.com/bitcrshr/envmgr/api/shared"
+	pb "github.com/bitcrshr/envmgr/proto/compiled/go"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"

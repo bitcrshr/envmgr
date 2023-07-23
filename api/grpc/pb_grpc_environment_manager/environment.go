@@ -3,7 +3,7 @@ package pb_grpc_environment_manager
 import (
 	"github.com/bitcrshr/envmgr/api/ent"
 	"github.com/bitcrshr/envmgr/api/ent/schema/gotype"
-	pb "github.com/bitcrshr/envmgr/api/proto/compiled/go"
+	pb "github.com/bitcrshr/envmgr/proto/compiled/go"
 	"github.com/bitcrshr/envmgr/api/shared"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
@@ -12,23 +12,23 @@ import (
 func PbEnvironmentKind(entObj gotype.EnvironmentKind) pb.Environment_Kind {
 	switch entObj {
 	case gotype.EnvironmentKind_Development:
-		return pb.Environment_DEVELOPMENT
+		return pb.Environment_KIND_DEVELOPMENT
 	case gotype.EnvironmentKind_Staging:
-		return pb.Environment_STAGING
+		return pb.Environment_KIND_STAGING
 	case gotype.EnvironmentKind_Production:
-		return pb.Environment_PRODUCTION
+		return pb.Environment_KIND_PRODUCTION
 	default:
-		return pb.Environment_UNSPECIFIED
+		return pb.Environment_KIND_UNSPECIFIED
 	}
 }
 
 func EntEnvironmentKind(pbObj pb.Environment_Kind) gotype.EnvironmentKind {
 	switch pbObj {
-	case pb.Environment_DEVELOPMENT:
+	case pb.Environment_KIND_DEVELOPMENT:
 		return gotype.EnvironmentKind_Development
-	case pb.Environment_STAGING:
+	case pb.Environment_KIND_STAGING:
 		return gotype.EnvironmentKind_Staging
-	case pb.Environment_PRODUCTION:
+	case pb.Environment_KIND_PRODUCTION:
 		return gotype.EnvironmentKind_Production
 	default:
 		return gotype.EnvironmentKind_Unspecified

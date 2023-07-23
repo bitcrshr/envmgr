@@ -9,8 +9,8 @@ import (
 	"github.com/bitcrshr/envmgr/api/ent/project"
 	"github.com/bitcrshr/envmgr/api/ent/variable"
 	"github.com/bitcrshr/envmgr/api/grpc/pb_grpc_environment_manager"
-	pb "github.com/bitcrshr/envmgr/api/proto/compiled/go"
 	"github.com/bitcrshr/envmgr/api/shared"
+	pb "github.com/bitcrshr/envmgr/proto/compiled/go"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
@@ -80,25 +80,12 @@ func (s *server) QueryVariables(ctx context.Context, req *pb.QueryVariablesReque
 		variable.HasEnvironmentWith(environment.HasProjectWith(project.ID(projUuid))),
 	)
 
-	switch t := req.Query.(type) {
-	case *pb.QueryVariablesRequest_EnvironmentId:
-		envUuid, err := uuid.Parse(t.EnvironmentId)
-		if err != nil {
-			err = status.Errorf(codes.InvalidArgument, "provided environment id [%s] was not a valid uuid", t.EnvironmentId)
-			shared.Logger().Error("QueryVariables failed", zap.Error(err))
-			return nil, err
-		}
-		filters = append(filters, variable.HasEnvironmentWith(environment.ID(envUuid)))
-	case *pb.QueryVariablesRequest_EnvironmentKind:
-		if t.EnvironmentKind == pb.Environment_UNSPECIFIED {
-			break
-		}
-
+	if req.EnvironmentKind != pb.Environment_KIND_UNSPECIFIED {
 		filters = append(
 			filters,
 			variable.HasEnvironmentWith(
 				environment.KindEQ(
-					pb_grpc_environment_manager.EntEnvironmentKind(t.EnvironmentKind),
+					pb_grpc_environment_manager.EntEnvironmentKind(req.EnvironmentKind),
 				),
 			),
 		)
