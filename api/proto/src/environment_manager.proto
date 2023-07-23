@@ -1,0 +1,169 @@
+syntax = "proto3";
+
+option go_package = "github.com/bitcrshr/envmgr/api/go;pb";
+
+package environment_manager;
+
+service EnvironmentManager {
+    // project
+    rpc CreateProject(CreateProjectRequest) returns (CreateProjectResponse) {}
+    rpc GetOneProject(GetOneProjectRequest) returns (GetOneProjectResponse) {}
+    rpc GetAllProjects(GetAllProjectsRequest) returns (GetAllProjectsResponse) {}
+    rpc UpdateProject(UpdateProjectRequest) returns (UpdateProjectResponse) {}
+    rpc DeleteProject(DeleteProjectRequest) returns (DeleteProjectResponse) {}
+
+    // environment
+    rpc CreateEnvironment(CreateEnvironmentRequest) returns (CreateEnvironmentResponse) {}
+    rpc GetOneEnvironemnt(GetOneEnvironmentRequest) returns (GetOneEnvironmentResponse) {}
+    rpc GetAllEnvironments(GetAllEnvironmentsRequest) returns (GetAllEnvironmentsResponse) {}
+    rpc UpdateEnvironment(UpdateEnvironmentRequest) returns (UpdateEnvironmentResponse) {}
+    rpc DeleteEnvironment(DeleteEnvironmentRequest) returns (DeleteEnvironmentResponse) {}
+
+    // variable
+    rpc CreateVariable(CreateVariableRequest) returns (CreateVariableResponse) {}
+    rpc GetOneVariable(GetOneVariableRequest) returns (GetOneVariableResponse) {}
+    rpc QueryVariables(QueryVariablesRequest) returns (QueryVariablesResponse) {}
+    rpc UpdateVariable(UpdateVariableRequest) returns (UpdateVariableResponse) {}
+    rpc UpdateManyVariables(UpdateManyVariablesRequest) returns (UpdateManyVariablesResponse) {}
+    rpc DeleteVariable(DeleteVariableRequest) returns (DeleteVariableResponse) {}
+    rpc DeleteManyVariables(DeleteManyVariablesRequest) returns (DeleteManyVariablesResponse) {}
+}
+message Project {
+    string id = 1;
+    string display_name = 2;
+}
+
+message Environment {
+    string id = 1;
+    string name = 2;
+    Kind kind = 3;
+
+    enum Kind {
+        UNSPECIFIED = 0;
+        DEVELOPMENT = 1;
+        STAGING = 2;
+        PRODUCTION = 3;
+    }
+}
+
+message Variable {
+    string id = 1;
+    string key = 2;
+    string value = 3;
+}
+
+// project
+message CreateProjectRequest {
+    Project project = 1;
+}
+message CreateProjectResponse {
+    Project project = 1;
+}
+
+message GetOneProjectRequest {
+    string id = 1;
+}
+message GetOneProjectResponse {
+    Project project = 1;
+}
+
+message GetAllProjectsRequest {}
+message GetAllProjectsResponse {
+    repeated Project projects = 1;
+}
+
+message UpdateProjectRequest {
+    Project project = 1;
+}
+message UpdateProjectResponse {
+    Project project = 1;
+}
+
+message DeleteProjectRequest {
+    string id = 1;
+}
+message DeleteProjectResponse {}
+
+// environment
+message CreateEnvironmentRequest {
+    Environment Environment = 1;
+}
+message CreateEnvironmentResponse {
+    Environment environment = 1;
+}
+
+message GetOneEnvironmentRequest {
+    string id = 1;
+}
+message GetOneEnvironmentResponse {
+    Environment environment = 1;
+}
+
+message GetAllEnvironmentsRequest {
+    string project_id = 1;
+}
+message GetAllEnvironmentsResponse {
+    repeated Environment environments = 1;
+}
+
+message UpdateEnvironmentRequest {
+    Environment environment = 1;
+}
+message UpdateEnvironmentResponse {
+    Environment environment = 1;
+}
+
+message DeleteEnvironmentRequest {
+    string id = 1;
+}
+message DeleteEnvironmentResponse {}
+
+// variable
+message CreateVariableRequest {
+    Variable variable = 1;
+}
+message CreateVariableResponse {
+    Variable variable = 1;
+}
+
+message GetOneVariableRequest {
+    string id = 1;
+}
+message GetOneVariableResponse {
+    Variable variable = 1;
+}
+
+message QueryVariablesRequest {
+    string project_id = 1;
+    oneof query {
+        Environment.Kind environment_kind = 2;
+        string environment_id = 3;
+    }
+}
+message QueryVariablesResponse {
+    repeated Variable variables = 1;
+}
+
+message UpdateVariableRequest {
+    Variable variable = 1;
+}
+message UpdateVariableResponse {
+    Variable variable = 1;
+}
+
+message UpdateManyVariablesRequest {
+    repeated Variable variable = 1;
+}
+message UpdateManyVariablesResponse {
+    repeated Variable variable = 1;
+}
+
+message DeleteVariableRequest {
+    string id = 1;
+}
+message DeleteVariableResponse {}
+
+message DeleteManyVariablesRequest {
+    repeated string ids = 1;
+}
+message DeleteManyVariablesResponse {}
