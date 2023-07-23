@@ -17,7 +17,7 @@ func (Variable) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Immutable().Unique(),
 		field.String("key").NotEmpty(),
-		field.String("value").Optional().Default(""),
+		field.String("value").Optional().Default("").Sensitive(),
 	}
 }
 

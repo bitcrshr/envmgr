@@ -21,7 +21,7 @@ type Variable struct {
 	// Key holds the value of the "key" field.
 	Key string `json:"key,omitempty"`
 	// Value holds the value of the "value" field.
-	Value string `json:"value,omitempty"`
+	Value string `json:"-"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the VariableQuery when eager-loading is set.
 	Edges            VariableEdges `json:"edges"`
@@ -146,8 +146,7 @@ func (v *Variable) String() string {
 	builder.WriteString("key=")
 	builder.WriteString(v.Key)
 	builder.WriteString(", ")
-	builder.WriteString("value=")
-	builder.WriteString(v.Value)
+	builder.WriteString("value=<sensitive>")
 	builder.WriteByte(')')
 	return builder.String()
 }
