@@ -16,6 +16,8 @@ type Tx struct {
 	Environment *EnvironmentClient
 	// Project is the client for interacting with the Project builders.
 	Project *ProjectClient
+	// User is the client for interacting with the User builders.
+	User *UserClient
 	// Variable is the client for interacting with the Variable builders.
 	Variable *VariableClient
 
@@ -151,6 +153,7 @@ func (tx *Tx) Client() *Client {
 func (tx *Tx) init() {
 	tx.Environment = NewEnvironmentClient(tx.config)
 	tx.Project = NewProjectClient(tx.config)
+	tx.User = NewUserClient(tx.config)
 	tx.Variable = NewVariableClient(tx.config)
 }
 

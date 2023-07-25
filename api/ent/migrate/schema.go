@@ -40,6 +40,27 @@ var (
 		Columns:    ProjectsColumns,
 		PrimaryKey: []*schema.Column{ProjectsColumns[0]},
 	}
+	// UsersColumns holds the columns for the "users" table.
+	UsersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "auth0_id", Type: field.TypeString},
+		{Name: "email", Type: field.TypeString, Nullable: true},
+		{Name: "family_name", Type: field.TypeString, Nullable: true},
+		{Name: "given_name", Type: field.TypeString, Nullable: true},
+		{Name: "name", Type: field.TypeString, Nullable: true},
+		{Name: "nickname", Type: field.TypeString, Nullable: true},
+		{Name: "phone_number", Type: field.TypeString, Nullable: true},
+		{Name: "picture", Type: field.TypeString, Nullable: true},
+		{Name: "username", Type: field.TypeString, Nullable: true},
+		{Name: "app_metadata", Type: field.TypeJSON, Nullable: true},
+		{Name: "user_metadata", Type: field.TypeJSON, Nullable: true},
+	}
+	// UsersTable holds the schema information for the "users" table.
+	UsersTable = &schema.Table{
+		Name:       "users",
+		Columns:    UsersColumns,
+		PrimaryKey: []*schema.Column{UsersColumns[0]},
+	}
 	// VariablesColumns holds the columns for the "variables" table.
 	VariablesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
@@ -65,6 +86,7 @@ var (
 	Tables = []*schema.Table{
 		EnvironmentsTable,
 		ProjectsTable,
+		UsersTable,
 		VariablesTable,
 	}
 )

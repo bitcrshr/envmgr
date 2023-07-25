@@ -12,6 +12,7 @@ import (
 	"github.com/bitcrshr/envmgr/api/ent"
 	"github.com/bitcrshr/envmgr/api/shared"
 	pb "github.com/bitcrshr/envmgr/proto/compiled/go"
+	_ "github.com/lib/pq"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -25,7 +26,7 @@ type server struct {
 	pb.UnimplementedEnvironmentManagerServer
 }
 
-func Serve() {
+func Serve(entMigrationDoneChannel chan bool) {
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
@@ -57,6 +58,8 @@ func Serve() {
 		shared.Logger().Fatal("failed to create db schema", zap.Error(err))
 		errChan <- err
 	}
+
+	entMigrationDoneChannel <- true
 
 	go func() {
 		if err := s.Serve(lis); err != nil {

@@ -1,8 +1,11 @@
 package main
 
 import (
+	"context"
+
 	"github.com/bitcrshr/envmgr/api/grpc"
 	"github.com/bitcrshr/envmgr/api/shared"
+	"github.com/bitcrshr/envmgr/api/webhooks"
 	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 )
@@ -14,5 +17,11 @@ func main() {
 		shared.Logger().Fatal("failed to load env", zap.Error((err)))
 	}
 
-	grpc.Serve()
+	ctx := context.Background()
+
+	entMigrationDoneChannel := make(chan bool)
+
+	go webhooks.Serve(ctx, entMigrationDoneChannel)
+
+	grpc.Serve(entMigrationDoneChannel)
 }

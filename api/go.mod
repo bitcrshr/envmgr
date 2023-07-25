@@ -7,6 +7,7 @@ require (
 	github.com/bitcrshr/envmgr/proto/compiled/go v0.0.0-00010101000000-000000000000
 	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.5.1
+	github.com/lib/pq v1.10.9
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.56.2
 )

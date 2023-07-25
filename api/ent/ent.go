@@ -14,6 +14,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/bitcrshr/envmgr/api/ent/environment"
 	"github.com/bitcrshr/envmgr/api/ent/project"
+	"github.com/bitcrshr/envmgr/api/ent/user"
 	"github.com/bitcrshr/envmgr/api/ent/variable"
 )
 
@@ -77,6 +78,7 @@ func checkColumn(table, column string) error {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			environment.Table: environment.ValidColumn,
 			project.Table:     project.ValidColumn,
+			user.Table:        user.ValidColumn,
 			variable.Table:    variable.ValidColumn,
 		})
 	})
