@@ -8,18 +8,30 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
+
+	"github.com/lestrrat-go/jwx/v2/jwk"
+	"github.com/lestrrat-go/jwx/v2/jwt"
 
 	"github.com/bitcrshr/envmgr/api/ent"
 	"github.com/bitcrshr/envmgr/api/shared"
 	pb "github.com/bitcrshr/envmgr/proto/compiled/go"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
 	_ "github.com/lib/pq"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/status"
 )
 
 var (
-	port = flag.Int("port", 50052, "environment_manager server port")
+	port     = flag.Int("port", 50052, "environment_manager server port")
+	jwkCache *jwk.Cache
+)
+
+const (
+	JWKS_URI string = "https://envmgr-dev.us.auth0.com/.well-known/jwks"
 )
 
 type server struct {
@@ -34,6 +46,16 @@ func Serve(entMigrationDoneChannel chan bool) {
 	}
 
 	ctx := context.Background()
+	jwkCache = jwk.NewCache(ctx)
+
+	jwkCache.Register(
+		JWKS_URI,
+		jwk.WithMinRefreshInterval(15*time.Minute),
+	)
+	_, err = jwkCache.Refresh(ctx, JWKS_URI)
+	if err != nil {
+		shared.Logger().Fatal("failed to do initial jwk refresh: %v", zap.Error(err))
+	}
 
 	s := grpc.NewServer()
 
@@ -78,4 +100,26 @@ func Serve(entMigrationDoneChannel chan bool) {
 	case <-stopChan:
 		shared.Logger().Info("Shutting down!")
 	}
+}
+
+func authCheck(ctx context.Context) (context.Context, error) {
+	token, err := auth.AuthFromMD(ctx, "bearer")
+	if err != nil {
+		return nil, err
+	}
+
+	jwks, err := jwkCache.Get(ctx, JWKS_URI)
+	if err != nil {
+		return nil, err
+	}
+
+	tok, err := jwt.Parse([]byte(token), jwt.WithKeySet(jwks), jwt.WithValidate(true))
+	if err != nil {
+		err := status.Error(codes.Unauthenticated, "invalid token")
+		return nil, err
+	}
+
+	ctx = context.WithValue(ctx, "user_id", tok.Subject())
+
+	return ctx, nil
 }

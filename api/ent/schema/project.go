@@ -23,6 +23,7 @@ func (Project) Fields() []ent.Field {
 // Edges of the Project.
 func (Project) Edges() []ent.Edge {
 	return []ent.Edge{
+		edge.From("owner", User.Type).Ref("projects").Unique(),
 		edge.To("environments", Environment.Type),
 	}
 }
