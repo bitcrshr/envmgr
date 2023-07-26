@@ -2,8 +2,12 @@ use keyring::Entry;
 use lazy_static::lazy_static;
 use once_cell::sync::OnceCell;
 
+use rand::thread_rng;
+use rand::Rng;
+
 static ACCESS_TOKEN_ENTRY: OnceCell<Entry> = OnceCell::new();
 static REFRESH_TOKEN_ENTRY: OnceCell<Entry> = OnceCell::new();
+static PRIVATE_KEY_ENTRY: OnceCell<Entry> = OnceCell::new();
 
 lazy_static! {
     static ref SERVICE_NAME: String = String::from("envmgr-cli");

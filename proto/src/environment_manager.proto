@@ -28,9 +28,11 @@ service EnvironmentManager {
     rpc DeleteVariable(DeleteVariableRequest) returns (DeleteVariableResponse) {}
     rpc DeleteManyVariables(DeleteManyVariablesRequest) returns (DeleteManyVariablesResponse) {}
 }
+
 message Project {
     string id = 1;
     string display_name = 2;
+    string owner_id = 3;
 }
 
 message Environment {
