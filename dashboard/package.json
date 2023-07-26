@@ -12,6 +12,9 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
+		"@grpc/grpc-js": "^1.8.20",
+		"@protobuf-ts/grpc-transport": "^2.9.0",
+		"@protobuf-ts/runtime-rpc": "^2.9.0",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
 		"@types/crypto-js": "^4.1.1",
